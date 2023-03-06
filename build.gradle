@@ -13,10 +13,25 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation (
+    implementation('org.springframework.boot:spring-boot-starter-web:2.6.7') {
+      exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    },
+    'com.amazonaws.serverless:aws-serverless-java-container-springboot2:1.9.1'
+  )
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+task buildZip(type: Zip) {
+  from compileJava
+  from processResources
+  into('lib') {
+    from configurations.runtimeClasspath
+  }
+}
+
+build.dependsOn buildZip
