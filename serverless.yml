@@ -1,0 +1,15 @@
+service: serverless-spring
+
+provider:
+  name: aws
+  runtime: java11
+  stage: dev
+
+package:
+  artifact: build/distributions/demo-0.0.1-SNAPSHOT.zip
+  
+functions:
+  app:
+    handler: com.example.demo.StreamLambdaHandler
+    events:
+      - http: ANY /
